@@ -1,0 +1,12 @@
+﻿{
+  "name": "GameManager.Editor",
+  "rootNamespace": "Game",
+  "includePlatforms": [
+    "Editor"
+  ],
+  "references": [
+    "VContainer",
+    "AMetadataStorage.Editor",
+    "GameManager.Abstractions"
+  ]
+}

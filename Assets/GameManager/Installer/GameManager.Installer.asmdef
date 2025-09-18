@@ -1,0 +1,13 @@
+﻿{
+  "name": "GameManager.Installer",
+  "rootNamespace": "Game",
+  "autoReferenced": true,
+  "references": [
+    "VContainer",
+    "Playtika.Controllers",
+    "UniTask",
+    "GameManager.Runtime",
+    "GameManager.Editor",
+    "GameManager.Runtime.EditorOnly"
+  ]
+}

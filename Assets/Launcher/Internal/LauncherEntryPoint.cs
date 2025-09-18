@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Game.Common;
 using VContainer.Unity;
 
 namespace Game.Launcher
@@ -29,7 +30,7 @@ namespace Game.Launcher
             _globalCts.Dispose();
             _wasDisposed = true;
 
-            _logger.Log(LauncherLoggerTags.Launcher, "Launcher stopped");
+            _logger.Log("Launcher", "Launcher stopped");
         }
 
         public void Start()
@@ -37,7 +38,7 @@ namespace Game.Launcher
             ThrowIfDisposed();
 
             _rootController.LaunchTree(_globalCts.Token);
-            _logger.Log(LauncherLoggerTags.Launcher, "Launcher started");
+            _logger.Log("Launcher", "Launcher started");
         }
 
         private void ThrowIfDisposed()

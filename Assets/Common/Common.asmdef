@@ -1,8 +1,9 @@
 ﻿{
   "name": "Common",
+  "rootNamespace": "Game",
   "references": [
     "VContainer",
-    "Playtika.Controllers",
+    "Playtika.Controllers", 
     "UniTask"
   ]
 }

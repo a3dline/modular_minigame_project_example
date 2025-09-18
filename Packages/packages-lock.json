@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.a3dline.unity-metadata-storage": {
+      "version": "git@github.com:a3dline/unity-metadata-storage.git?path=Assets/Package#develop",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "5fd1fa035f95ce12a881fc78724bdb3c57189acd"
+    },
     "com.cysharp.unitask": {
       "version": "2.5.10",
       "depth": 0,

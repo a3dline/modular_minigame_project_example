@@ -1,0 +1,10 @@
+﻿{
+  "name": "GameManager.Abstractions",
+  "rootNamespace": "Game",
+  "references": [
+    "Playtika.Controllers",
+    "Common",
+    "UniTask",
+    "VContainer"
+  ]
+}

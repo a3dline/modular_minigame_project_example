@@ -1,0 +1,17 @@
+﻿{
+  "name": "GameManager.Runtime.EditorOnly",
+  "rootNamespace": "Game",
+  "autoReferenced": true,
+  "references": [
+    "VContainer",
+    "Playtika.Controllers",
+    "UniTask",
+    "Common",
+    "GameManager.Abstractions",
+    "GameManager.Editor",
+    "GameManager.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "GameManager.Runtime",
+  "rootNamespace": "Game",
+  "autoReferenced": true,
+  "references": [
+    "VContainer",
+    "Playtika.Controllers",
+    "UniTask",
+    "UniTask.Linq",
+    "Common",
+    "GameManager.Abstractions",
+    "Unity.TextMeshPro"
+  ]
+}

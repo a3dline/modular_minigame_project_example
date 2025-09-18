@@ -2,7 +2,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Common
+namespace Game.Common
 {
     public abstract class ScopedControllerWithResultBase<TScope> : ControllerWithResultBase
         where TScope : IInstaller, new()

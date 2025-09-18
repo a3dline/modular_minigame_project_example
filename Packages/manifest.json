@@ -42,7 +42,8 @@
     "com.unity.modules.xr": "1.0.0",
     "com.cysharp.unitask": "2.5.10",
     "jp.hadashikick.vcontainer": "1.17.0",
-    "com.playtika.controllers-tree": "1.1.0"
+    "com.playtika.controllers-tree": "1.1.0",
+    "com.a3dline.unity-metadata-storage": "git@github.com:a3dline/unity-metadata-storage.git?path=Assets/Package#develop"
   },
   "scopedRegistries": [
     {

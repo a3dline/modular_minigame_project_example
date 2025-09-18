@@ -2,7 +2,8 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using GameManager.Public;
+using Game.Common;
+using Game.GameManager;
 using Playtika.Controllers;
 
 namespace Game.Launcher
@@ -27,12 +28,16 @@ namespace Game.Launcher
             {
                 try
                 {
-                    await ExecuteAndWaitResultAsync<GameManagerController>(token);
+                    await ExecuteAndWaitResultAsync<IGameManagerController>(token);
+                }
+                catch (OperationCanceledException)
+                {
+                    // Ignore propagation
                 }
                 catch (Exception e)
                 {
                     _logger.LogException(e);
-                    _logger.LogError(LauncherLoggerTags.Launcher, "Launcher caught exception. Restarting...");
+                    _logger.LogError("Launcher", "Launcher caught exception. Restarting...");
                     await UniTask.Delay(500, cancellationToken: token);
                 }
             }

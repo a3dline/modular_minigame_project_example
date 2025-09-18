@@ -1,0 +1,8 @@
+﻿{
+  "name": "Common",
+  "references": [
+    "VContainer",
+    "Playtika.Controllers",
+    "UniTask"
+  ]
+}

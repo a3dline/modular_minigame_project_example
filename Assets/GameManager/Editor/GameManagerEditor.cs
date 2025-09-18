@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.IO;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,6 +19,15 @@ namespace Game.GameManager.Editor
         {
             Clear();
             var isEnabled = GameMetadataStorage.IsGameEnabled(_directoryPath);
+
+            if (!isEnabled)
+            {
+                if (IsDirectoryHierarchyHasGame() || IsChildrenHasGame(_directoryPath))
+                {
+                    return;
+                }
+            }
+            
             var enableButton = new Button(() =>
             {
                 if (isEnabled)
@@ -31,7 +41,13 @@ namespace Game.GameManager.Editor
 
                 Repaint();
             }) { text = isEnabled ? "Disable Game" : "Enable Game" };
+
+            Add(enableButton);
             
+            if (!isEnabled)
+            {
+                return;
+            }
 
             var manifestField = new ObjectField("Manifest");
             manifestField.objectType = typeof(MonoScript);
@@ -54,9 +70,61 @@ namespace Game.GameManager.Editor
                     manifestField.SetValueWithoutNotify(manifest);
                 }
             });
+
+            var sceneField = new ObjectField("Initial Scene");
+            sceneField.objectType = typeof(SceneAsset);
+            sceneField.SetValueWithoutNotify(GameMetadataStorage.GetScene(_directoryPath));
+            sceneField.RegisterValueChangedCallback(evt =>
+            {
+                var newValue = evt.newValue as SceneAsset;
+                GameMetadataStorage.SetScene(_directoryPath, newValue);
+            });
             
-            Add(enableButton);
+            var gameName = new TextField("Game Name");
+            gameName.SetValueWithoutNotify(GameMetadataStorage.GetGameName(_directoryPath));
+            gameName.RegisterValueChangedCallback(evt =>
+            {
+                var newValue = evt.newValue;
+                GameMetadataStorage.SetGameName(_directoryPath, newValue);
+            });
+
+            Add(gameName);
             Add(manifestField);
+            Add(sceneField);
+        }
+
+        private bool IsDirectoryHierarchyHasGame()
+        {
+            var parent = Directory.GetParent(_directoryPath);
+            var stopPath = Path.GetFullPath(Application.dataPath);
+
+            while (parent != null)
+            {
+                var current = Path.GetFullPath(parent.FullName);
+                if (string.Equals(current, stopPath, System.StringComparison.OrdinalIgnoreCase))
+                    break;
+
+                if (GameMetadataStorage.IsGameEnabled(current))
+                    return true;
+
+                parent = parent.Parent;
+            }
+
+            return false;
+        }
+        
+        private bool IsChildrenHasGame(string directoryPath)
+        {
+            var directories = Directory.GetDirectories(directoryPath);
+            foreach (var directory in directories)
+            {
+                if (GameMetadataStorage.IsGameEnabled(directory) || IsChildrenHasGame(directory))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool Validate(MonoScript manifest)

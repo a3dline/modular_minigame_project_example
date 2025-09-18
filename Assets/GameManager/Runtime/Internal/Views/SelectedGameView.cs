@@ -21,7 +21,7 @@ namespace Game.GameManager.Views
         {
             var button = Instantiate(_buttonTemplate, _buttonTemplate.transform.parent);
             button.gameObject.SetActive(true);
-            button.GetComponentInChildren<TMP_Text>().text = $"Start game {gameName}";
+            button.GetComponentInChildren<TMP_Text>().text = $"Start \"{gameName}\"";
             button.onClick.AddListener(() => OnGameSelected?.Invoke(gameName));
         }
     }

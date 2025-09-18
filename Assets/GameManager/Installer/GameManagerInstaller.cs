@@ -11,7 +11,7 @@ namespace Game.GameManager
             builder.Register<SelectGamePopupViewController>(Lifetime.Transient);
             
         #if UNITY_EDITOR
-            builder.Register<IGameManifestsProvider, EditorGameManifestProvider>(Lifetime.Singleton);
+            builder.Register<IGameDataProvider, EditorGameDataProvider>(Lifetime.Singleton);
         #else
         #endif
         }

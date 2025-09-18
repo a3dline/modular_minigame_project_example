@@ -23,54 +23,55 @@ namespace Game.GameManager
         protected override async UniTask OnFlowAsync(CancellationToken cancellationToken)
         {
             var gameDataList = new List<GameSelectionViewData>();
-            var manifests = _gameDataProvider.GetAllGamesData().ToArray();
-            var manifestMap = new Dictionary<string, IGameManifest>();
-            foreach (var gameData in manifests)
+            var gameDatas = _gameDataProvider.GetAllGamesData().ToArray();
+            var gameDataMap = new Dictionary<string, GameData>();
+            foreach (var gameData in gameDatas)
             {
-                var gameName = gameData.GameName?? gameData.Manifest.GetType().Name;
-                var viewData = new GameSelectionViewData 
-                {
-                    Name = gameName
-                };
-                manifestMap[gameName] = gameData.Manifest;
+                ValidateGameData(gameData);
+                var gameName = gameData.GameName ?? gameData.Manifest.GetType().Name;
+                var viewData = new GameSelectionViewData { Name = gameName };
+                gameDataMap[gameName] = gameData;
                 gameDataList.Add(viewData);
             }
-            
+
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(cancellationToken))
             {
                 var selectedGame = await ExecuteAndWaitResultAsync<SelectGamePopupViewController, IEnumerable<GameSelectionViewData>, GameSelectionViewData>(gameDataList, cancellationToken);
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var manifest = manifestMap[selectedGame.Name];
-                ValidateManifest(manifest);
-                
-                
-                
-                await ExecuteAndWaitResultAsync<GameControllerRunner, IGameManifest, EmptyControllerResult>(manifest, cancellationToken);
+                var gameData = gameDataMap[selectedGame.Name];
+
+                await ExecuteAndWaitResultAsync<GameControllerRunner, GameData, EmptyControllerResult>(gameData, cancellationToken);
                 await UniTask.Delay(100, cancellationToken: cancellationToken);
             }
         }
 
-        private void ValidateManifest(IGameManifest manifest)
+        private void ValidateGameData(GameData gameData)
         {
+            var manifest = gameData.Manifest;
+            if (manifest == null)
+            {
+                throw new NullReferenceException("Game data has null manifest");
+            }
+
             if (manifest.LauncherType == null)
             {
                 throw new NullReferenceException($"Game manifest {manifest.GetType().Name} has null launcher type");
             }
-            
+
             if (!typeof(IGameLauncher).IsAssignableFrom(manifest.LauncherType.Type))
             {
                 throw new InvalidCastException($"Game manifest {manifest.GetType().Name} has invalid launcher type {manifest.LauncherType}");
             }
 
-            if (manifest.ScopeType == null)
-            {
-                throw new NullReferenceException($"Game manifest {manifest.GetType().Name} has null scope type");
-            }
-
-            if (!typeof(IInstaller).IsAssignableFrom(manifest.ScopeType.Type))
+            if (manifest.ScopeType != null && !typeof(IInstaller).IsAssignableFrom(manifest.ScopeType.Type))
             {
                 throw new InvalidCastException($"Game manifest {manifest.GetType().Name} has invalid scope type {manifest.ScopeType}");
+            }
+
+            if (string.IsNullOrEmpty(gameData.SceneName))
+            {
+                throw new ArgumentException($"Game manifest {manifest.GetType().Name} has empty scene name");
             }
         }
     }

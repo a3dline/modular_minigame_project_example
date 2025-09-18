@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.GameManager;
+using UnityEngine.SceneManagement;
 
 namespace Games.GameA
 {
@@ -8,7 +9,7 @@ namespace Games.GameA
     {
         public UniTask LaunchAsync(IGameControllerRunner runner, CancellationToken token)
         {
-            return runner.ExecuteAndWaitResultAsync<GameAController>(token);
+            return runner.ExecuteAndWaitResultAsync<GameASceneViewController, Scene>(runner.Scene, token);
         }
     }
 }

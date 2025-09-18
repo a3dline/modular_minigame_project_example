@@ -1,6 +1,7 @@
 ﻿{
   "name": "GameManager.Abstractions",
   "rootNamespace": "Game",
+  "autoReferenced": true,
   "references": [
     "Playtika.Controllers",
     "Common",

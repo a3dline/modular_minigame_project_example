@@ -2,7 +2,6 @@
   "name": "GameA.Runtime",
   "references": [
     "GameManager.Abstractions",
-    "Common",
     "VContainer",
     "Playtika.Controllers",
     "UniTask"

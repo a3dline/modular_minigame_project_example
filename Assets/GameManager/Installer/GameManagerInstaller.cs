@@ -12,6 +12,8 @@ namespace Game.GameManager
             
         #if UNITY_EDITOR
             builder.Register<IGameDataProvider, EditorGameDataProvider>(Lifetime.Singleton);
+            builder.Register<IBundleProvider, EditorBundleProvider>(Lifetime.Singleton);
+            builder.Register<ISceneLoader, EditorSceneLoader>(Lifetime.Singleton); 
         #else
         #endif
         }

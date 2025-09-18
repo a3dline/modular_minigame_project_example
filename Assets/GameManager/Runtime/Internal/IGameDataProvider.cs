@@ -7,6 +7,7 @@ namespace Game.GameManager
         public IGameManifest Manifest;
         public string SceneName;
         public string GameName;
+        public string BundleName;
     }
     
     internal interface IGameDataProvider

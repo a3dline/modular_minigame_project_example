@@ -7,7 +7,7 @@ namespace Games.GameA
     {
         public void Install(IContainerBuilder builder)
         {
-            builder.Register<GameAController>(Lifetime.Transient);
+            builder.Register<GameASceneViewController>(Lifetime.Transient);
         }
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Playtika.Controllers;
+using UnityEngine.SceneManagement;
 
 namespace Game.GameManager
 {
     public interface IGameControllerRunner
     {
+        public Scene Scene { get; }
+
         public UniTask<TResult> ExecuteAndWaitResultAsync<T, TArg, TResult>(TArg arg, CancellationToken token)
             where T : class, IControllerWithResult<TResult>, IController<TArg>;
 

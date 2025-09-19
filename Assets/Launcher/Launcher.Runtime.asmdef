@@ -7,7 +7,6 @@
     "Playtika.Controllers",
     "UniTask",
     "UniTask.Linq",
-    
     "Common",
     "GameManager.Runtime"
   ]

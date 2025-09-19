@@ -11,6 +11,7 @@ namespace Game.Launcher
     internal class LauncherRootController : RootController
     {
         private readonly ILoggerService _logger;
+
         public LauncherRootController(IControllerFactory controllerFactory, ILoggerService logger) : base(controllerFactory)
         {
             _logger = logger;

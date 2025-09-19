@@ -2,18 +2,29 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Game.GameManager;
 using Playtika.Controllers;
 using UnityEngine.SceneManagement;
 
 namespace Games.GameA
 {
-    public class GameASceneViewController : ControllerWithResultBase<Scene, EmptyControllerResult>
+    public class GameASceneViewController : ControllerWithResultBase
     {
-        public GameASceneViewController(IControllerFactory controllerFactory) : base(controllerFactory) { }
+        private readonly IGameSceneProvider _sceneProvider;
+
+        public GameASceneViewController(IControllerFactory controllerFactory,
+                                        IGameSceneProvider sceneProvider) 
+            : base(controllerFactory)
+        {
+            _sceneProvider = sceneProvider;
+        }
 
         protected override UniTask OnFlowAsync(CancellationToken cancellationToken)
         {
-            var view = Args.GetRootGameObjects().Select(x => x.GetComponent<SceneAView>()).FirstOrDefault(x => x != null);
+            var view = _sceneProvider.Scene
+                                     .GetRootGameObjects()
+                                     .Select(x => x.GetComponent<SceneAView>())
+                                     .FirstOrDefault(x => x != null);
             if (view == null)
             {
                 throw new Exception("SceneAView not found in scene");

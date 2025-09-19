@@ -9,6 +9,7 @@
     "UniTask.Linq",
     "Common",
     "GameManager.Abstractions",
-    "Unity.TextMeshPro"
+    "Unity.TextMeshPro",
+    "AUnitaskSemaphore.Runtime"
   ]
 }

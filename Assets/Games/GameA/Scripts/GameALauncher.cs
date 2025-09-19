@@ -1,15 +1,22 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.GameManager;
-using UnityEngine.SceneManagement;
 
 namespace Games.GameA
 {
     public class GameALauncher : IGameLauncher
     {
-        public UniTask LaunchAsync(IGameControllerRunner runner, CancellationToken token)
+        private readonly IGameControllerRunner _controllerRunner;
+        private readonly IGameSceneProvider _sceneProvider;
+
+        public GameALauncher(IGameControllerRunner controllerRunner)
         {
-            return runner.ExecuteAndWaitResultAsync<GameASceneViewController, Scene>(runner.Scene, token);
+            _controllerRunner = controllerRunner;
+        }
+
+        public UniTask LaunchAsync(CancellationToken token)
+        {
+            return _controllerRunner.ExecuteAndWaitResultAsync<GameASceneViewController>(token);
         }
     }
 }

@@ -10,19 +10,25 @@ namespace Game.GameManager
 {
     internal class GameControllerRunner : ControllerWithResultBase<GameData, EmptyControllerResult>, IGameControllerRunner
     {
+        private readonly GameAssetsProviderFactory _assetsProviderFactory;
         private readonly IBundleProvider _bundleProvider;
         private readonly IObjectResolver _resolver;
         private readonly ISceneLoader _sceneLoader;
+        private readonly GameSceneProviderFactory _sceneProviderFactory;
         private IControllerFactory _controllersFactory;
 
         public GameControllerRunner(IControllerFactory controllerFactory,
                                     IBundleProvider bundleProvider,
                                     ISceneLoader sceneLoader,
+                                    GameAssetsProviderFactory assetsProviderFactory,
+                                    GameSceneProviderFactory sceneProviderFactory,
                                     IObjectResolver resolver)
             : base(controllerFactory)
         {
             _bundleProvider = bundleProvider;
             _sceneLoader = sceneLoader;
+            _assetsProviderFactory = assetsProviderFactory;
+            _sceneProviderFactory = sceneProviderFactory;
             _resolver = resolver;
         }
 
@@ -53,26 +59,47 @@ namespace Game.GameManager
 
         protected override async UniTask OnFlowAsync(CancellationToken cancellationToken)
         {
-            using var _ = await _bundleProvider.LoadAsync(Args.BundleName, cancellationToken);
-            await using var holder = await _sceneLoader.LoadAsync(Args.SceneName, cancellationToken);
-            Scene = holder.Scene;
+            var t1 = _bundleProvider.LoadAsync(Args.SceneBundleName, cancellationToken);
+            var t2 = string.IsNullOrEmpty(Args.AssetsBundleName) ? new UniTask<IBundleHolder>(new FakeAssetBundleHolder()) : _bundleProvider.LoadAsync(Args.AssetsBundleName, cancellationToken);
 
+            var holders = await UniTask.WhenAll(t1, t2);
+            using var _ = holders.Item1;
+            using var assetsBundleHolder = holders.Item2;
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await using var sceneHolder = await _sceneLoader.LoadAsync(Args.SceneName, cancellationToken);
+            Scene = sceneHolder.Scene;
+
+            var manifestType = Type.GetType(Args.ManifestType);
+            if (manifestType is null)
+            {
+                throw new NullReferenceException($"Cannot find game manifest type {Args.ManifestType}");
+            }
+
+            var manifest = (IGameManifest)Activator.CreateInstance(manifestType);
+
+            var assetsProvider = _assetsProviderFactory.Create(assetsBundleHolder);
+            var sceneProvider = _sceneProviderFactory.Create(Scene);
             var scope = _resolver.CreateScope(builder =>
             {
-                builder.Register(Args.Manifest.LauncherType.Type, Lifetime.Transient);
+                builder.Register(manifest.LauncherType.Type, Lifetime.Transient);
+                builder.RegisterInstance(assetsProvider);
+                builder.RegisterInstance<IGameControllerRunner>(this);
+                builder.RegisterInstance(sceneProvider);
 
-                if (Args.Manifest.ScopeType != null)
+                if (manifest.ScopeType != null)
                 {
-                    var installer = Activator.CreateInstance(Args.Manifest.ScopeType.Type) as IInstaller;
+                    var installer = Activator.CreateInstance(manifest.ScopeType.Type) as IInstaller;
                     installer!.Install(builder);
                 }
             });
 
             AddDisposable(scope);
             _controllersFactory = scope.Resolve<IControllerFactory>();
-            var launcher = scope.Resolve(Args.Manifest.LauncherType.Type) as IGameLauncher;
+            var launcher = scope.Resolve(manifest.LauncherType.Type) as IGameLauncher;
 
-            await launcher!.LaunchAsync(this, cancellationToken);
+            await launcher!.LaunchAsync(cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
 
             Complete(default);
         }

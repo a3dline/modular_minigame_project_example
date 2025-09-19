@@ -1,5 +1,4 @@
 ﻿using Game.Common;
-using Game.GameManager;
 using Playtika.Controllers;
 using VContainer;
 using VContainer.Unity;

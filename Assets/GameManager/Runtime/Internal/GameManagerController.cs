@@ -25,10 +25,10 @@ namespace Game.GameManager
             var gameDataList = new List<GameSelectionViewData>();
             var gameDatas = _gameDataProvider.GetAllGamesData().ToArray();
             var gameDataMap = new Dictionary<string, GameData>();
+            var index = 0;
             foreach (var gameData in gameDatas)
             {
-                ValidateGameData(gameData);
-                var gameName = gameData.GameName ?? gameData.Manifest.GetType().Name;
+                var gameName = gameData.GameName ?? "Game " + (++index);
                 var viewData = new GameSelectionViewData { Name = gameName };
                 gameDataMap[gameName] = gameData;
                 gameDataList.Add(viewData);
@@ -46,33 +46,6 @@ namespace Game.GameManager
             }
         }
 
-        private void ValidateGameData(GameData gameData)
-        {
-            var manifest = gameData.Manifest;
-            if (manifest == null)
-            {
-                throw new NullReferenceException("Game data has null manifest");
-            }
-
-            if (manifest.LauncherType == null)
-            {
-                throw new NullReferenceException($"Game manifest {manifest.GetType().Name} has null launcher type");
-            }
-
-            if (!typeof(IGameLauncher).IsAssignableFrom(manifest.LauncherType.Type))
-            {
-                throw new InvalidCastException($"Game manifest {manifest.GetType().Name} has invalid launcher type {manifest.LauncherType}");
-            }
-
-            if (manifest.ScopeType != null && !typeof(IInstaller).IsAssignableFrom(manifest.ScopeType.Type))
-            {
-                throw new InvalidCastException($"Game manifest {manifest.GetType().Name} has invalid scope type {manifest.ScopeType}");
-            }
-
-            if (string.IsNullOrEmpty(gameData.SceneName))
-            {
-                throw new ArgumentException($"Game manifest {manifest.GetType().Name} has empty scene name");
-            }
-        }
+        
     }
 }

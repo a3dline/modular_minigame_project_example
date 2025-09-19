@@ -7,6 +7,8 @@
   "references": [
     "VContainer",
     "AMetadataStorage.Editor",
-    "GameManager.Abstractions"
+    "GameManager.Abstractions",
+    "GameManager.Runtime",
+    "Unity.ScriptableBuildPipeline.Editor"
   ]
 }

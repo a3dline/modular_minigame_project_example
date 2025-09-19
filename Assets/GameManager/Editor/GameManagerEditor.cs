@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace Game.GameManager.Editor
 {
@@ -27,12 +29,13 @@ namespace Game.GameManager.Editor
                     return;
                 }
             }
-            
+
             var enableButton = new Button(() =>
             {
                 if (isEnabled)
                 {
                     GameMetadataStorage.DisableGame(_directoryPath);
+                    
                 }
                 else
                 {
@@ -43,7 +46,7 @@ namespace Game.GameManager.Editor
             }) { text = isEnabled ? "Disable Game" : "Enable Game" };
 
             Add(enableButton);
-            
+
             if (!isEnabled)
             {
                 return;
@@ -79,7 +82,7 @@ namespace Game.GameManager.Editor
                 var newValue = evt.newValue as SceneAsset;
                 GameMetadataStorage.SetScene(_directoryPath, newValue);
             });
-            
+
             var gameName = new TextField("Game Name");
             gameName.SetValueWithoutNotify(GameMetadataStorage.GetGameName(_directoryPath));
             gameName.RegisterValueChangedCallback(evt =>
@@ -88,9 +91,41 @@ namespace Game.GameManager.Editor
                 GameMetadataStorage.SetGameName(_directoryPath, newValue);
             });
 
+            var assets = GameMetadataStorage.GetAllAssets(_directoryPath);
+            var assetsList = new ListView();
+            assetsList.selectionType = SelectionType.Multiple;
+            assetsList.makeItem = () =>
+            {
+                var objectField = new ObjectField();
+                objectField.objectType = typeof(Object);
+                return objectField;
+            };
+            assetsList.bindItem = (item, index) =>
+            {
+                var objectField = item as ObjectField;
+                var asset = assets[index];
+                objectField!.SetValueWithoutNotify(asset);
+                objectField.RegisterValueChangedCallback(evt =>
+                {
+                    var newValue = evt.newValue;
+                    assets[index] = newValue;
+                    GameMetadataStorage.SetAllAssets(_directoryPath, assets);
+                });
+            };
+            assetsList.itemsAdded += evt => { GameMetadataStorage.SetAllAssets(_directoryPath, assets); };
+            assetsList.itemsRemoved += evt => { GameMetadataStorage.SetAllAssets(_directoryPath, assets); };
+            assetsList.headerTitle = "Game Assets";
+            assetsList.showAddRemoveFooter = true;
+            assetsList.itemsSource = assets;
+
+            var buildButton = new Button(() => { AssetBundleBuilder.Build(_directoryPath); }) { text = "Build Asset Bundle" };
+
             Add(gameName);
             Add(manifestField);
             Add(sceneField);
+            Add(new Label("Game Assets:"));
+            Add(assetsList);
+            Add(buildButton);
         }
 
         private bool IsDirectoryHierarchyHasGame()
@@ -101,18 +136,22 @@ namespace Game.GameManager.Editor
             while (parent != null)
             {
                 var current = Path.GetFullPath(parent.FullName);
-                if (string.Equals(current, stopPath, System.StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(current, stopPath, StringComparison.OrdinalIgnoreCase))
+                {
                     break;
+                }
 
                 if (GameMetadataStorage.IsGameEnabled(current))
+                {
                     return true;
+                }
 
                 parent = parent.Parent;
             }
 
             return false;
         }
-        
+
         private bool IsChildrenHasGame(string directoryPath)
         {
             var directories = Directory.GetDirectories(directoryPath);

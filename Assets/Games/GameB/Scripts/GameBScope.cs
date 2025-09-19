@@ -7,7 +7,7 @@ namespace Games.GameB
     {
         public void Install(IContainerBuilder builder)
         {
-            throw new System.NotImplementedException();
+            builder.Register<GameBPopupLaunchController>(Lifetime.Transient);
         }
     }
 }

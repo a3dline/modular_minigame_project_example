@@ -4,6 +4,7 @@
 /obj/
 /Logs/
 /UserSettings/
+/Builds/
 
 # IDE
 .idea/

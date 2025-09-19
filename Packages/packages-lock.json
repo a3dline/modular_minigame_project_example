@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.a3dline.unitask-semaphore": {
+      "version": "git@github.com:a3dline/unitask-semaphore.git?path=Assets/Package#1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "1008e7bff6416fa7f166b7865242e5d3f64486f1"
+    },
     "com.a3dline.unity-metadata-storage": {
       "version": "git@github.com:a3dline/unity-metadata-storage.git?path=Assets/Package#develop",
       "depth": 0,
@@ -34,7 +43,7 @@
       "dependencies": {}
     },
     "com.unity.ide.rider": {
-      "version": "3.0.37",
+      "version": "3.0.38",
       "depth": 0,
       "source": "registry",
       "dependencies": {

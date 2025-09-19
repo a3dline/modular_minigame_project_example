@@ -1,13 +1,18 @@
 {
   "dependencies": {
+    "com.a3dline.unitask-semaphore": "git@github.com:a3dline/unitask-semaphore.git?path=Assets/Package#1.0.0",
+    "com.a3dline.unity-metadata-storage": "git@github.com:a3dline/unity-metadata-storage.git?path=Assets/Package#develop",
+    "com.cysharp.unitask": "2.5.10",
+    "com.playtika.controllers-tree": "1.1.0",
     "com.unity.2d.sprite": "1.0.0",
-    "com.unity.ide.rider": "3.0.37",
+    "com.unity.ide.rider": "3.0.38",
     "com.unity.ide.visualstudio": "2.0.23",
     "com.unity.inputsystem": "1.14.1",
     "com.unity.mathematics": "1.3.2",
     "com.unity.scriptablebuildpipeline": "2.4.2",
     "com.unity.test-framework": "1.5.1",
     "com.unity.ugui": "2.0.0",
+    "jp.hadashikick.vcontainer": "1.17.0",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -39,11 +44,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.cysharp.unitask": "2.5.10",
-    "jp.hadashikick.vcontainer": "1.17.0",
-    "com.playtika.controllers-tree": "1.1.0",
-    "com.a3dline.unity-metadata-storage": "git@github.com:a3dline/unity-metadata-storage.git?path=Assets/Package#develop"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {

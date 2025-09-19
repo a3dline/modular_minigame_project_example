@@ -23,18 +23,18 @@ implemented a simple `AssetBundle` loader and binding storage.
 
 ## Project Structure
 
-`Assets/Bootstrap.unity` - The main scene that initializes the solution.
-`Assets/Launcher` - Contains the app launcher logic and exception handling.
-`Assets/GameManager` - Manages game loading and switching.
-`Assets/Games` - Contains individual game modules
+`Assets/Bootstrap.unity` - The main scene that initializes the solution.<br>
+`Assets/Launcher` - Contains the app launcher logic and exception handling.<br>
+`Assets/GameManager` - Manages game loading and switching.<br>
+`Assets/Games` - Contains individual game modules<br>
 
 ## Used Technologies
 
-`Playtika.ControllersTree` - HMVC framework for Unity. https://github.com/PlaytikaOSS/controllers-tree
-`UserMetadataStorage` - Simple key-value storage for Unity Object metadata (yaml). https://github.com/a3dline/unity-metadata-storage
-`UniTask` - For async/await support in Unity. https://github.com/Cysharp/UniTask
-`UniTaskSemaphore` - Semaphore implementation for UniTask without synchronization context https://github.com/a3dline/unitask-semaphore
-`VContainer` - Dependency injection framework for Unity. https://github.com/hadashiA/VContainer
+`Playtika.ControllersTree` - HMVC framework for Unity. https://github.com/PlaytikaOSS/controllers-tree<br>
+`UserMetadataStorage` - Simple key-value storage for Unity Object metadata (yaml). https://github.com/a3dline/unity-metadata-storage<br>
+`UniTask` - For async/await support in Unity. https://github.com/Cysharp/UniTask<br>
+`UniTaskSemaphore` - Semaphore implementation for UniTask without synchronization context https://github.com/a3dline/unitask-semaphore<br>
+`VContainer` - Dependency injection framework for Unity. https://github.com/hadashiA/VContainer<br>
 
 ## How to Build an existing project
 

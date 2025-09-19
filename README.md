@@ -39,17 +39,17 @@ implemented a simple `AssetBundle` loader and binding storage.
 ## How to Build an existing project
 
 1. Select "GameA" directory inspector<br>
-![img.png](img.png)
+![Screenshot_1.png](img/Screenshot_1.png)
 2. Use `Build Asset Bundle` button for building all game assets into `StreamingAssets` directory
 3. Do the same for "GameB" directory
 4. Build and Run the project in a unity common way
 
 ## How to Add a New Game
 1. Create a new directory<br>
-![img_1.png](img_1.png)
+![Screenshot_2.png](img/Screenshot_2.png)
 2. Use `Enable Game` button to create a new game module
 3. Set Game Name<br>
-![img_2.png](img_2.png)
+![Screenshot_3.png](img/Screenshot_3.png)
 3. Create a game launcher
 ```C#
 namespace MyGame
@@ -77,12 +77,11 @@ namespace MyGame
 }
 ```
 5. Bind manifest to the game directory inspector<br>
-![img_3.png](img_3.png)
+![Screenshot_4.png](img/Screenshot_4.png)
 6. Create a game initial scene
 7. Bind the scene to the game directory inspector<br>
-![img_4.png](img_4.png)
-8. Run the game<br>
-![img_5.png](img_5.png)
+![Screenshot_5.png](img/Screenshot_5.png)
+8. Run the game
 
 ## Game Scope
 Each game can have its own DI scope.
